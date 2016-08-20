@@ -103,42 +103,40 @@ list_get xs n =
 
 view : Model -> Html.Html Msg
 view model =
-    div []
-        [ div
-            [ onMouseMove
-            , class "image-wrapper"
-            , style
-                [ ( "display", "inline-block" )
-                , ( "border", "1px solid black" )
-                ]
+    div
+        [ onMouseMove
+        , class "image-wrapper"
+        , style
+            [ ( "display", "inline-block" )
+            , ( "border", "1px solid black" )
             ]
-            (case list_get model.images model.current of
-                Nothing ->
-                    []
-
-                Just url ->
-                    [ img
-                        [ src url
-                        , onLoad
-                        ]
-                        []
-                    , div
-                        []
-                        (case model.segmentWidth of
-                            Nothing ->
-                                []
-
-                            Just segmentWidth ->
-                                [ div
-                                    [ style
-                                        [ ( "border-right", toString segmentWidth ++ "px solid black" )
-                                        , ( "width", toString (segmentWidth * (toFloat model.current)) ++ "px" )
-                                        , ( "height", "2px" )
-                                        ]
-                                    ]
-                                    []
-                                ]
-                        )
-                    ]
-            )
         ]
+        (case list_get model.images model.current of
+            Nothing ->
+                []
+
+            Just url ->
+                [ img
+                    [ src url
+                    , onLoad
+                    ]
+                    []
+                , div
+                    []
+                    (case model.segmentWidth of
+                        Nothing ->
+                            []
+
+                        Just segmentWidth ->
+                            [ div
+                                [ style
+                                    [ ( "border-right", toString segmentWidth ++ "px solid black" )
+                                    , ( "width", toString (segmentWidth * (toFloat model.current)) ++ "px" )
+                                    , ( "height", "2px" )
+                                    ]
+                                ]
+                                []
+                            ]
+                    )
+                ]
+        )
