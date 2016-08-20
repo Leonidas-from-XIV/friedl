@@ -33,11 +33,16 @@ type Msg =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    Move clientX clientY ->
-      Debug.log (toString clientX ++ "x" ++ toString clientY) { model | current = model.current + 1 }
+    Move cursor width ->
+      let count = model.images |> List.length
+          segmentWidth = width // count
+          currentSegment = cursor // segmentWidth
+      in
+      Debug.log (toString currentSegment)
+              { model | current = currentSegment }
 
 moveDecoder : Json.Decoder Msg
-moveDecoder = (Json.object2 Move ("clientX" := Json.int) ("clientY" := Json.int))
+moveDecoder = Json.object2 Move ("clientX" := Json.int) (Json.at ["target", "offsetWidth"] Json.int)
 
 onMouseMove : Html.Attribute Msg
 onMouseMove =
