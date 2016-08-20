@@ -18,7 +18,7 @@ images = [ "https://xivilization.net/~marek/wiggle/tree0.jpg"
 
 type alias Model = { current : Int,
                      images : List (String),
-                     segmentWidth : Maybe Int}
+                     segmentWidth : Maybe Float}
 
 main =
   App.beginnerProgram {
@@ -39,7 +39,7 @@ update msg model =
  in
   case msg of
     Load width ->
-      let segmentWidth = width // count
+      let segmentWidth = (toFloat width) / (toFloat count)
       in
       { model | segmentWidth = Just segmentWidth }
     Move cursor width ->
@@ -75,7 +75,8 @@ view model =
        , class "image-wrapper"
        , style [ ("display", "inline-block")
                , ("border", "1px solid black")
-               ]]
+               ]
+       ]
        (case list_get model.images model.current of
          Nothing -> []
          Just url -> [ img [ src url
@@ -88,7 +89,7 @@ view model =
                             Just segmentWidth ->
                               [ div
                                 [ style [ ("border-right", toString segmentWidth ++ "px solid black")
-                                        , ("width", toString (segmentWidth * model.current) ++ "px")
+                                        , ("width", toString (segmentWidth * (toFloat model.current)) ++ "px")
                                         , ("height", "2px")]]
                                 []
                               ])
