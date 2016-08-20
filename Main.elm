@@ -31,19 +31,24 @@ main =
 
 type Msg =
   Move Int Int
+  | Load Int
 
 update : Msg -> Model -> Model
 update msg model =
+ let count = model.images |> List.length
+ in
   case msg of
+    Load width ->
+      let segmentWidth = width // count
+      in
+      { model | segmentWidth = Just segmentWidth }
     Move cursor width ->
-      let count = model.images |> List.length
-          segmentWidth = width // count
+      let segmentWidth = width // count
           part = cursor // segmentWidth
           currentSegment = if part < count
             then part else count - 1
       in
-      { model | current = currentSegment,
-                segmentWidth = Just segmentWidth }
+      { model | current = currentSegment }
 
 moveDecoder : Json.Decoder Msg
 moveDecoder = Json.object2 Move ("clientX" := Json.int) (Json.at ["target", "offsetWidth"] Json.int)
@@ -51,6 +56,13 @@ moveDecoder = Json.object2 Move ("clientX" := Json.int) (Json.at ["target", "off
 onMouseMove : Html.Attribute Msg
 onMouseMove =
   Html.Events.on "mousemove" moveDecoder
+
+loadDecoder : Json.Decoder Msg
+loadDecoder = Json.map Load (Json.at ["target", "naturalWidth"] Json.int)
+
+onLoad : Html.Attribute Msg
+onLoad =
+  Html.Events.on "load" loadDecoder
 
 list_get : List a -> Int -> Maybe a
 list_get xs n = List.drop n xs |> List.head
@@ -66,7 +78,9 @@ view model =
                ]]
        (case list_get model.images model.current of
          Nothing -> []
-         Just url -> [ img [ src url ] []
+         Just url -> [ img [ src url
+                           , onLoad
+                           ] []
                      , div
                          []
                          (case model.segmentWidth of
