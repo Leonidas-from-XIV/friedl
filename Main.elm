@@ -2,7 +2,6 @@ module Main exposing (..)
 
 import Html exposing (text, div, img, Attribute)
 import Html.Attributes exposing (src, style, class)
-import Html.Events exposing (onMouseOver)
 import Html.App as App
 import Json.Decode as Json exposing ((:=), Decoder)
 
