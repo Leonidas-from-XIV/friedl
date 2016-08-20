@@ -1,8 +1,8 @@
-import Html exposing (text, div, img)
+import Html exposing (text, div, img, Attribute)
 import Html.Attributes exposing (src, style, class)
 import Html.Events exposing (onMouseOver)
 import Html.App as App
-import Json.Decode as Json exposing ((:=))
+import Json.Decode as Json exposing ((:=), Decoder)
 
 images = [ "https://xivilization.net/~marek/wiggle/tree0.jpg"
          , "https://xivilization.net/~marek/wiggle/tree1.jpg"
@@ -50,17 +50,17 @@ update msg model =
       in
       { model | current = currentSegment }
 
-moveDecoder : Json.Decoder Msg
+moveDecoder : Decoder Msg
 moveDecoder = Json.object2 Move ("clientX" := Json.int) (Json.at ["target", "offsetWidth"] Json.int)
 
-onMouseMove : Html.Attribute Msg
+onMouseMove : Attribute Msg
 onMouseMove =
   Html.Events.on "mousemove" moveDecoder
 
-loadDecoder : Json.Decoder Msg
+loadDecoder : Decoder Msg
 loadDecoder = Json.map Load (Json.at ["target", "naturalWidth"] Json.int)
 
-onLoad : Html.Attribute Msg
+onLoad : Attribute Msg
 onLoad =
   Html.Events.on "load" loadDecoder
 
