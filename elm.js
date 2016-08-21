@@ -8001,6 +8001,29 @@ var _Leonidas_from_XIV$friedl$Main$view = function (model) {
 						A2(
 						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$style(
+								_elm_lang$core$Native_List.fromArray(
+									[
+										{ctor: '_Tuple2', _0: 'display', _1: 'none'}
+									]))
+							]),
+						A2(
+							_elm_lang$core$List$map,
+							function (url) {
+								return A2(
+									_elm_lang$html$Html$img,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$src(url)
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[]));
+							},
+							model.images)),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
 							[]),
 						function () {
 							var _p3 = model.segmentWidth;
