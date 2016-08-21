@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html exposing (text, div, img, Attribute)
 import Html.Attributes exposing (src, style, class)
+import Html.Events exposing (on)
 import Html.App as App
 import Json.Decode as Json exposing ((:=), Decoder)
 
@@ -28,14 +29,11 @@ type alias Model =
 
 
 main =
-    App.beginnerProgram
+    App.program
         { view = view
         , update = update
-        , model =
-            { current = 0
-            , images = images
-            , segmentWidth = Nothing
-            }
+        , subscriptions = subscriptions
+        , init = init
         }
 
 
@@ -44,7 +42,17 @@ type Msg
     | Load Int
 
 
-update : Msg -> Model -> Model
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( { current = 0, images = images, segmentWidth = Nothing }, Cmd.none )
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     let
         count =
@@ -56,7 +64,7 @@ update msg model =
                     segmentWidth =
                         (toFloat width) / (toFloat count)
                 in
-                    { model | segmentWidth = Just segmentWidth }
+                    ( { model | segmentWidth = Just segmentWidth }, Cmd.none )
 
             Move cursor width ->
                 let
@@ -72,7 +80,7 @@ update msg model =
                         else
                             count - 1
                 in
-                    { model | current = currentSegment }
+                    ( { model | current = currentSegment }, Cmd.none )
 
 
 moveDecoder : Decoder Msg
@@ -82,7 +90,7 @@ moveDecoder =
 
 onMouseMove : Attribute Msg
 onMouseMove =
-    Html.Events.on "mousemove" moveDecoder
+    on "mousemove" moveDecoder
 
 
 loadDecoder : Decoder Msg
@@ -92,7 +100,7 @@ loadDecoder =
 
 onLoad : Attribute Msg
 onLoad =
-    Html.Events.on "load" loadDecoder
+    on "load" loadDecoder
 
 
 list_get : List a -> Int -> Maybe a
