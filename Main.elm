@@ -115,6 +115,9 @@ view model =
                     ]
                     []
                 , div
+                    [ style [ ( "display", "none" ) ] ]
+                    (List.map (\url -> img [ src url ] []) model.images)
+                , div
                     []
                     (case model.segmentWidth of
                         Nothing ->
