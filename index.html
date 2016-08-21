@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>Wigglegram demo</title>
+    <script src="elm.js"></script>
+  </head>
+  <body>
+    <div id="wigglegram"></div>
+  <body>
+  <script type="text/javascript">
+    var images = 
+      [ "https://xivilization.net/~marek/wiggle/tree0.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree1.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree2.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree3.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree4.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree5.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree6.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree7.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree8.jpg"
+      , "https://xivilization.net/~marek/wiggle/tree9.jpg"
+      ];
+    var div = document.getElementById('wigglegram');
+    var wigglegram = Elm.Main.embed(div, images);
+  </script>
+</html>

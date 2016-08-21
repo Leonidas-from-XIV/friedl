@@ -7,20 +7,6 @@ import Html.App as App
 import Json.Decode as Json exposing ((:=), Decoder)
 
 
-images =
-    [ "https://xivilization.net/~marek/wiggle/tree0.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree1.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree2.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree3.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree4.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree5.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree6.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree7.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree8.jpg"
-    , "https://xivilization.net/~marek/wiggle/tree9.jpg"
-    ]
-
-
 type alias Model =
     { current : Int
     , images : List (String)
@@ -29,7 +15,7 @@ type alias Model =
 
 
 main =
-    App.program
+    App.programWithFlags
         { view = view
         , update = update
         , subscriptions = subscriptions
@@ -47,8 +33,8 @@ subscriptions _ =
     Sub.none
 
 
-init : ( Model, Cmd Msg )
-init =
+init : List String -> ( Model, Cmd Msg )
+init images =
     ( { current = 0, images = images, segmentWidth = Nothing }, Cmd.none )
 
 
