@@ -7,7 +7,34 @@ the same object.
 How to use
 ----------
 
-TODO
+Provided you have a `div` like this that you'd like to replace by the
+wigglegram widget:
+
+```html
+<div id="wigglegram"></div>
+```
+
+Load the `elm.js` into your page, in the `head`:
+
+```html
+<script src="elm.js"></script>
+```
+
+Then you can specify your images to be wiggled in left-to-right order and let
+your `div` be replaced:
+
+```html
+<script type="text/javascript">
+  var images =
+    [ "https://xivilization.net/~marek/wiggle/tree0.jpg"
+    , "https://xivilization.net/~marek/wiggle/tree1.jpg"
+    , "https://xivilization.net/~marek/wiggle/tree2.jpg"
+    , "https://xivilization.net/~marek/wiggle/tree3.jpg"
+    ];
+  var div = document.getElementById('wigglegram');
+  var wigglegram = Elm.Main.embed(div, images);
+</script>
+```
 
 Name
 ----
