@@ -1,10 +1,15 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Html exposing (text, div, img, Attribute)
+{-|
+
+@docs main
+
+-}
+
+import Html exposing (text, div, img, Attribute, programWithFlags)
 import Html.Attributes exposing (src, style, class)
 import Html.Events exposing (on)
-import Html.App as App
-import Json.Decode as Json exposing ((:=), Decoder)
+import Json.Decode as Json exposing (field, Decoder)
 
 
 type alias Model =
@@ -13,9 +18,11 @@ type alias Model =
     , segmentWidth : Maybe Float
     }
 
-
+{-| Starts the program
+-}
+main : Program (List String) Model Msg
 main =
-    App.programWithFlags
+    programWithFlags
         { view = view
         , update = update
         , subscriptions = subscriptions
@@ -71,7 +78,7 @@ update msg model =
 
 moveDecoder : Decoder Msg
 moveDecoder =
-    Json.object2 Move ("clientX" := Json.int) (Json.at [ "target", "offsetWidth" ] Json.int)
+    Json.map2 Move (field "clientX" Json.int) (Json.at [ "target", "offsetWidth" ] Json.int)
 
 
 onMouseMove : Attribute Msg
