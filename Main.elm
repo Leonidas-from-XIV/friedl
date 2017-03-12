@@ -14,9 +14,10 @@ import Json.Decode as Json exposing (field, Decoder)
 
 type alias Model =
     { current : Int
-    , images : List (String)
+    , images : List String
     , segmentWidth : Maybe Float
     }
+
 
 {-| Starts the program
 -}
@@ -101,10 +102,22 @@ list_get xs n =
     List.drop n xs |> List.head
 
 
+touchMoveDecoder =
+    Json.map2 (,)
+        (Json.at [ "changedTouches", "0" ] (Json.map truncate (field "clientX" Json.float)))
+        (Json.at [ "target", "offsetWidth" ] Json.int)
+        |> Json.map (\( clientX, width ) -> Move (min (max 0 clientX) width) width)
+
+
+onTouchMove =
+    on "touchmove" touchMoveDecoder
+
+
 view : Model -> Html.Html Msg
 view model =
     div
         [ onMouseMove
+        , onTouchMove
         , class "image-wrapper"
         , style
             [ ( "display", "inline-block" )
