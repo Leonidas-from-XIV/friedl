@@ -10,7 +10,8 @@ import Html exposing (text, div, img, Attribute, programWithFlags)
 import Html.Attributes exposing (src, style, class)
 import Html.Events exposing (on)
 import Json.Decode as Json exposing (field, Decoder)
-
+import Json.Encode exposing (Value)
+import DeviceOrientation exposing (deviceOrientation)
 
 type alias Model =
     { current : Int
@@ -33,12 +34,26 @@ main =
 
 type Msg
     = Move Int Int
+    | Orientation Float
     | Load Int
 
 
 subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
+subscriptions model =
+    deviceOrientation decodeOrientation
+
+
+orientationDecoder : Decoder Msg
+orientationDecoder =
+    Json.map Orientation (field "alpha" Json.float)
+
+
+decodeOrientation : Value -> Msg
+decodeOrientation x =
+        let result = Json.decodeValue orientationDecoder x in
+        case result of
+            Ok x -> x
+            Err _ -> Orientation 0.0
 
 
 init : List String -> ( Model, Cmd Msg )
@@ -53,6 +68,10 @@ update msg model =
             model.images |> List.length
     in
         case msg of
+            Orientation angle ->
+                let _ = Debug.log "angle" angle in
+                ( model, Cmd.none )
+
             Load width ->
                 let
                     segmentWidth =
@@ -85,7 +104,6 @@ moveDecoder =
 onMouseMove : Attribute Msg
 onMouseMove =
     on "mousemove" moveDecoder
-
 
 loadDecoder : Decoder Msg
 loadDecoder =

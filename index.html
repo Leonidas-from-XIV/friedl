@@ -26,5 +26,9 @@
       ];
     var div = document.getElementById('wigglegram');
     var wigglegram = Elm.Main.embed(div, images);
+    window.addEventListener('deviceorientation', function (ev) {
+      console.log("sending orientation", ev);
+      wigglegram.ports.deviceOrientation.send(ev);
+    });
   </script>
 </html>
